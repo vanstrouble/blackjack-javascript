@@ -15,11 +15,23 @@ const createDeck = () => {
         }
     }
 
-    console.log(deck);
     deck = _.shuffle(deck);
-    console.log(deck);
+    console.log(deck.slice(-5));
     return deck;
 
 }
 
 createDeck();
+
+const takeCard = () => {
+    if (deck.length === 0) {
+        throw 'No cards left';
+    }
+
+    const card = deck.pop();
+    console.log(card);
+    console.log(deck.slice(-5));
+    return card;
+};
+
+takeCard();
