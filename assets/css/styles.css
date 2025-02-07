@@ -1,0 +1,31 @@
+html, body {
+    margin: 0;
+    font-size: 1.6rem;
+    background-color: #124837;
+    color: white;
+}
+
+header {
+    text-align: center;
+    background-color: black;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    padding: 0.5rem;
+}
+
+.card-img {
+    width: 7rem;
+    position: relative;
+    left: 1rem;
+    margin-left: -85px;
+}
+
+#computer-cards,
+#player-cards {
+    height: 10rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
