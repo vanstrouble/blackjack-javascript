@@ -1,5 +1,6 @@
 let deck = [];
 let playerPoints = 0;
+let computerPoints = 0;
 
 // HTML refrences
 const btnRequest = document.querySelector('#btn-request');
@@ -44,6 +45,35 @@ const valueCard = (card) => {
     return isNaN(value) ? (value === 'A' ? 11 : 10) : value * 1;
 };
 
+const turnComputer = (minPoints) => {
+    do {
+        const card = takeCard();
+        computerPoints += valueCard(card);
+        updateScore(computerScoreElement, computerPoints);
+
+        const imgCard = document.createElement('img');
+        imgCard.src = `assets/cards/${card}.png`;
+        imgCard.classList.add('card-img');
+        computerCards.appendChild(imgCard);
+
+        if (minPoints > 21) {
+            break;
+        }
+    } while (computerPoints < minPoints && minPoints <= 21);
+
+    setTimeout(() => {
+        if (computerPoints === playerPoints) {
+            console.warn('Draw');
+        } else if (playerPoints > 21) {
+            console.warn('Computer wins');
+        } else if (computerPoints > 21) {
+            console.warn('You win');
+        } else {
+            console.warn('Computer wins');
+        }
+    }, 100);
+};
+
 const updateScore = (element, points) => {
     element.textContent = `Score: ${points}`;
 };
@@ -65,6 +95,7 @@ btnRequest.addEventListener('click', () => {
     if (playerPoints > 21) {
         console.warn('You lose');
         btnRequest.disabled = true;
+        turnComputer(playerPoints);
     } else if (playerPoints === 21) {
         console.warn('CONGRATULATIONS! You win');
         btnRequest.disabled = true;
