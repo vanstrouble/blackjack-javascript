@@ -3,6 +3,9 @@ let playerPoints = 0;
 
 // HTML refrences
 const btnRequest = document.querySelector('#btn-request');
+
+const playerCards = document.querySelector('#player-cards');
+const computerCards = document.querySelector('#computer-cards');
 const scoreElements = document.querySelectorAll('.score .badge');
 const playerScoreElement = scoreElements[0];
 const computerScoreElement = scoreElements[1];
@@ -27,8 +30,6 @@ const createDeck = () => {
     return deck;
 }
 
-createDeck();
-
 const takeCard = () => {
     if (deck.length === 0) {
         throw 'No cards left';
@@ -48,10 +49,24 @@ const updateScore = (element, points) => {
 };
 
 // Event
+createDeck();
+
 btnRequest.addEventListener('click', () => {
     const card = takeCard();
-    console.log(card);
+
     playerPoints += valueCard(card);
-    console.log(playerPoints);
     updateScore(playerScoreElement, playerPoints);
+
+    const imgCard = document.createElement('img');
+    imgCard.src = `assets/cards/${card}.png`;
+    imgCard.classList.add('card-img');
+    playerCards.appendChild(imgCard);
+
+    if (playerPoints > 21) {
+        console.warn('You lose');
+        btnRequest.disabled = true;
+    } else if (playerPoints === 21) {
+        console.warn('CONGRATULATIONS! You win');
+        btnRequest.disabled = true;
+    }
 });
