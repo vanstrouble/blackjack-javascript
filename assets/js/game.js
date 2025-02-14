@@ -1,8 +1,16 @@
 let deck = [];
+let playerPoints = 0;
+
+// HTML refrences
+const btnRequest = document.querySelector('#btn-request');
+const scoreElements = document.querySelectorAll('.score .badge');
+const playerScoreElement = scoreElements[0];
+const computerScoreElement = scoreElements[1];
+
+
 const createDeck = () => {
     const suits = ['C', 'D', 'H', 'S'];
     const specialCards = ['A', 'J', 'Q', 'K'];
-
     for (let i=2; i<=10; i++) {
         for (let suit of suits) {
             deck.push(i + suit);
@@ -16,9 +24,7 @@ const createDeck = () => {
     }
 
     deck = _.shuffle(deck);
-    console.log(deck.slice(-5));
     return deck;
-
 }
 
 createDeck();
@@ -29,17 +35,23 @@ const takeCard = () => {
     }
 
     const card = deck.pop();
-    console.log(card);
-    console.log(deck.slice(-5));
     return card;
 };
 
-takeCard();
-
 const valueCard = (card) => {
     const value = card.substring(0, card.length - 1);
-    console.log(value);
     return isNaN(value) ? (value === 'A' ? 11 : 10) : value * 1;
 };
 
-console.log(valueCard('H'));
+const updateScore = (element, points) => {
+    element.textContent = `Score: ${points}`;
+};
+
+// Event
+btnRequest.addEventListener('click', () => {
+    const card = takeCard();
+    console.log(card);
+    playerPoints += valueCard(card);
+    console.log(playerPoints);
+    updateScore(playerScoreElement, playerPoints);
+});
