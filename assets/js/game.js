@@ -4,6 +4,7 @@ let computerPoints = 0;
 
 // HTML refrences
 const btnRequest = document.querySelector('#btn-request');
+const btnStop = document.querySelector('#btn-stop');
 
 const playerCards = document.querySelector('#player-cards');
 const computerCards = document.querySelector('#computer-cards');
@@ -95,9 +96,17 @@ btnRequest.addEventListener('click', () => {
     if (playerPoints > 21) {
         console.warn('You lose');
         btnRequest.disabled = true;
+        btnStop.disabled = true;
         turnComputer(playerPoints);
     } else if (playerPoints === 21) {
         console.warn('CONGRATULATIONS! You win');
         btnRequest.disabled = true;
+        btnStop.disabled = true;
     }
+});
+
+btnStop.addEventListener('click', () => {
+    btnRequest.disabled = true;
+    btnStop.disabled = true;
+    turnComputer(playerPoints);
 });
