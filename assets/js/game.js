@@ -5,6 +5,7 @@ let computerPoints = 0;
 // HTML refrences
 const btnRequest = document.querySelector('#btn-request');
 const btnStop = document.querySelector('#btn-stop');
+const btnNewGame = document.querySelector('#btn-new-game');
 
 const playerCards = document.querySelector('#player-cards');
 const computerCards = document.querySelector('#computer-cards');
@@ -16,21 +17,12 @@ const computerScoreElement = scoreElements[1];
 const createDeck = () => {
     const suits = ['C', 'D', 'H', 'S'];
     const specialCards = ['A', 'J', 'Q', 'K'];
-    for (let i=2; i<=10; i++) {
-        for (let suit of suits) {
-            deck.push(i + suit);
-        }
-    }
-
-    for (let specialCard of specialCards) {
-        for (let suit of suits) {
-            deck.push(specialCard + suit);
-        }
-    }
-
+    deck = suits.flatMap(suit =>
+        [...Array(9).keys()].map(i => (i + 2) + suit).concat(specialCards.map(card => card + suit))
+    );
     deck = _.shuffle(deck);
     return deck;
-}
+};
 
 const takeCard = () => {
     if (deck.length === 0) {
@@ -44,6 +36,18 @@ const takeCard = () => {
 const valueCard = (card) => {
     const value = card.substring(0, card.length - 1);
     return isNaN(value) ? (value === 'A' ? 11 : 10) : value * 1;
+};
+
+const determineWinner = () => {
+    setTimeout(() => {
+        if (computerPoints === playerPoints) {
+            alert('Draw');
+        } else if (playerPoints > 21 || (computerPoints <= 21 && computerPoints > playerPoints)) {
+            alert('Computer wins');
+        } else {
+            alert('CONGRATULATIONS! You win');
+        }
+    }, 500);
 };
 
 const turnComputer = (minPoints) => {
@@ -62,24 +66,14 @@ const turnComputer = (minPoints) => {
         }
     } while (computerPoints < minPoints && minPoints <= 21);
 
-    setTimeout(() => {
-        if (computerPoints === playerPoints) {
-            console.warn('Draw');
-        } else if (playerPoints > 21) {
-            console.warn('Computer wins');
-        } else if (computerPoints > 21) {
-            console.warn('You win');
-        } else {
-            console.warn('Computer wins');
-        }
-    }, 100);
+    determineWinner();
 };
 
 const updateScore = (element, points) => {
     element.textContent = `Score: ${points}`;
 };
 
-// Event
+// Events
 createDeck();
 
 btnRequest.addEventListener('click', () => {
@@ -94,12 +88,11 @@ btnRequest.addEventListener('click', () => {
     playerCards.appendChild(imgCard);
 
     if (playerPoints > 21) {
-        console.warn('You lose');
         btnRequest.disabled = true;
         btnStop.disabled = true;
         turnComputer(playerPoints);
     } else if (playerPoints === 21) {
-        console.warn('CONGRATULATIONS! You win');
+        determineWinner();
         btnRequest.disabled = true;
         btnStop.disabled = true;
     }
@@ -109,4 +102,17 @@ btnStop.addEventListener('click', () => {
     btnRequest.disabled = true;
     btnStop.disabled = true;
     turnComputer(playerPoints);
+});
+
+btnNewGame.addEventListener('click', () => {
+    deck = [];
+    playerPoints = 0;
+    computerPoints = 0;
+    playerScoreElement.textContent = 'Score: 0';
+    computerScoreElement.textContent = 'Score: 0';
+    playerCards.innerHTML = '';
+    computerCards.innerHTML = '';
+    btnRequest.disabled = false;
+    btnStop.disabled = false;
+    createDeck();
 });
