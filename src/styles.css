@@ -39,3 +39,10 @@ header {
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.score .badge {
+    font-size: 1.2rem;
+    border-radius: 1em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    letter-spacing: 1px;
+}
