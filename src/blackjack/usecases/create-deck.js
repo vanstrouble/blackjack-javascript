@@ -1,3 +1,7 @@
+/**
+ * Creates and shuffles a deck of playing cards; returns the deck and a map of card values.
+ * @returns {{deck: string[], valueMap: Record<string, number>}}
+ */
 export const createDeck = () => {
     const suits = ['C', 'D', 'H', 'S'];
     const specialCards = ['A', 'J', 'Q', 'K'];

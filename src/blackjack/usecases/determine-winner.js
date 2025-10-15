@@ -1,3 +1,8 @@
+/**
+ * Determines and displays the winner of the game.
+ * @param {number} computerPoints - Computer's total points
+ * @param {number} playerPoints - Player's total points
+ */
 export const determineWinner = (computerPoints, playerPoints) => {
     setTimeout(() => {
         if (computerPoints === playerPoints) {
