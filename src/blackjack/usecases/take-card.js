@@ -5,8 +5,7 @@
  */
 export const takeCard = (deck) => {
     if (deck.length === 0) {
-        throw 'No cards left';
+        throw new Error('No cards left in deck');
     }
-    const card = deck.pop();
-    return card;
+    return deck.pop();
 };
