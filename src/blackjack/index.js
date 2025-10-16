@@ -1,9 +1,4 @@
-import {createDeck} from './usecases/create-deck.js';
-import {takeCard} from './usecases/take-card.js';
-import {valueCard} from './usecases/value-card.js';
-import {renderCard} from './usecases/render-card.js';
-import {updateScore} from './usecases/update-score.js';
-import {determineWinner} from './usecases/determine-winner.js';
+import { createDeck, takeCard, valueCard, renderCard, updateScore, determineWinner } from './usecases/index.js';
 
 let deck = [];
 let playerPoints = 0;
