@@ -17,10 +17,28 @@ It focuses on DOM manipulation, event handling, basic game state management, and
 
 ## Tech
 - Vanilla JavaScript (ES6+)
+- Vite for fast development and building
 - Minimal HTML + Bootstrap for quick styling
-- No build tools required
 
-## Run
-Open index.html in a browser.
+## Setup & Run
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Build for production:
+   ```bash
+   npm run build
+   ```
+
+4. Preview production build:
+   ```bash
+   npm run preview
+   ```
 
 Enjoy and tweak the logic to extend (multi-player, different Ace values, stats, etc.).
