@@ -20,37 +20,41 @@ const setActionsEnabled = (enabled) => {
     btnStop.disabled = !enabled;
 };
 
-const turnComputer = (minPoints) => {
-    do {
-        const card = takeCard(deck);
-        computerPoints += valueCard(card, valueMap);
+const drawCardFor = (isPlayer) => {
+    const card = takeCard(deck);
+    const points = valueCard(card, valueMap);
+
+    if (isPlayer) {
+        playerPoints += points;
+        updateScore(playerScoreElement, playerPoints);
+        renderCard(playerCards, card);
+    } else {
+        computerPoints += points;
         updateScore(computerScoreElement, computerPoints);
         renderCard(computerCards, card);
-        if (minPoints > 21) break;
-    } while (computerPoints < minPoints && minPoints <= 21);
+    }
+};
+
+const finishGame = () => {
+    setActionsEnabled(false);
+    while (computerPoints < playerPoints && computerPoints < 21) {
+        drawCardFor(false);
+    }
     determineWinner(computerPoints, playerPoints);
 };
 
 ({ deck, valueMap } = createDeck());
 
 btnRequest.addEventListener('click', () => {
-    const card = takeCard(deck);
-    playerPoints += valueCard(card, valueMap);
-    updateScore(playerScoreElement, playerPoints);
-    renderCard(playerCards, card);
+    drawCardFor(true);
 
-    if (playerPoints > 21) {
-        setActionsEnabled(false);
-        turnComputer(playerPoints);
-    } else if (playerPoints === 21) {
-        setActionsEnabled(false);
-        determineWinner(computerPoints, playerPoints);
+    if (playerPoints >= 21) {
+        finishGame();
     }
 });
 
 btnStop.addEventListener('click', () => {
-    setActionsEnabled(false);
-    turnComputer(playerPoints);
+    finishGame();
 });
 
 btnNewGame.addEventListener('click', () => {
