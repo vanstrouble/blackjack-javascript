@@ -1,4 +1,4 @@
-import { createDeck, takeCard, valueCard, renderCard, updateScore, determineWinner } from './usecases/index.js';
+import { createDeck, takeCard, valueCard, renderCard, updateScore, determineWinner } from './usecases';
 
 let deck = [];
 let playerPoints = 0;
@@ -20,7 +20,36 @@ const setActionsEnabled = (enabled) => {
     btnStop.disabled = !enabled;
 };
 
+const initGame = () => {
+    ({ deck, valueMap } = createDeck());
+    setActionsEnabled(true);
+};
+
+const finishGame = () => {
+    setActionsEnabled(false);
+    while (computerPoints < playerPoints && computerPoints < 21) {
+        drawCardFor(false);
+    }
+    determineWinner(computerPoints, playerPoints);
+};
+
+const resetGame = () => {
+    playerPoints = 0;
+    computerPoints = 0;
+    updateScore(playerScoreElement, 0);
+    updateScore(computerScoreElement, 0);
+    playerCards.innerHTML = '';
+    computerCards.innerHTML = '';
+    initGame();
+};
+
 const drawCardFor = (isPlayer) => {
+    if (deck.length === 0) {
+        console.warn('There are no more cards in the deck');
+        finishGame();
+        return;
+    }
+
     const card = takeCard(deck);
     const points = valueCard(card, valueMap);
 
@@ -35,15 +64,11 @@ const drawCardFor = (isPlayer) => {
     }
 };
 
-const finishGame = () => {
-    setActionsEnabled(false);
-    while (computerPoints < playerPoints && computerPoints < 21) {
-        drawCardFor(false);
-    }
-    determineWinner(computerPoints, playerPoints);
-};
-
-({ deck, valueMap } = createDeck());
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGame);
+} else {
+    initGame();
+}
 
 btnRequest.addEventListener('click', () => {
     drawCardFor(true);
@@ -57,13 +82,4 @@ btnStop.addEventListener('click', () => {
     finishGame();
 });
 
-btnNewGame.addEventListener('click', () => {
-    playerPoints = 0;
-    computerPoints = 0;
-    playerScoreElement.textContent = 'Score: 0';
-    computerScoreElement.textContent = 'Score: 0';
-    playerCards.innerHTML = '';
-    computerCards.innerHTML = '';
-    setActionsEnabled(true);
-    ({ deck, valueMap } = createDeck());
-});
+btnNewGame.addEventListener('click', resetGame);
